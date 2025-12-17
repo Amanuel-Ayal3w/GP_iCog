@@ -43,24 +43,8 @@ The script prints the best grid found, its conflict count, complexity, fitness, 
 
 ## Running Tests
 
-All tests (recommended before commits):
-
-```bash
-python3 -m unittest discover -s tests
-```
-
-Single test module (for faster iteration):
-
-```bash
-python3 -m unittest tests.test_engine
-```
-
-Single test case (deep dive on one scenario):
-
-```bash
-python3 -m unittest tests.test_engine.EngineTests.test_engine_respects_seed_and_returns_solution
-```
-
+- Full suite: `python3 -m unittest discover -s tests`
+- Individual module: `python3 -m unittest tests.test_<module_name>`
 ## Reproducibility Tips
 
 - Adjust configuration values directly in config.py or when instantiating Config.
