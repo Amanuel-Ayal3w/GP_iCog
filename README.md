@@ -21,15 +21,6 @@ This project implements a grammar-guided evolutionary search (GES) solver for Su
 ## Requirements
 
 - Python 3.10 or newer
-- (Optional) Virtual environment for isolation
-
-To create and activate a virtual environment:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
-```
 
 ## Running the Solver Demo
 
