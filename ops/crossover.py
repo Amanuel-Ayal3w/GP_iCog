@@ -16,20 +16,28 @@ def cx_boxes(parent1: Individual, parent2: Individual, cfg: Config, givens: list
     child2 = parent2.clone()
 
     total_boxes = cfg.N * cfg.N
-    take_from_p1 = {box for box in range(total_boxes) if rng.random() < 0.5}
-    if not take_from_p1:
-        take_from_p1.add(rng.randrange(total_boxes))
+    if total_boxes == 0:
+        return child1, child2
+
+    indices = list(range(total_boxes))
+    rng.shuffle(indices)
+    split = rng.randint(1, total_boxes - 1) if total_boxes > 1 else 0
+    child1_p1_boxes = set(indices[:split])
+    child2_p1_boxes = set(indices[split:]) if total_boxes > 1 else set()
+    if total_boxes == 1:
+        child1_p1_boxes = {indices[0]}
+        child2_p1_boxes = set()
 
     for box in range(total_boxes):
         coords = box_cells(box, cfg.N)
-        source1 = parent1 if box in take_from_p1 else parent2
-        source2 = parent2 if box in take_from_p1 else parent1
+        source1 = parent1 if box in child1_p1_boxes else parent2
+        source2 = parent1 if box in child2_p1_boxes else parent2
         for r, c in coords:
             child1.grid[r][c] = source1.grid[r][c]
             child2.grid[r][c] = source2.grid[r][c]
 
-    child1.complexity = min(parent1.complexity, parent2.complexity)
-    child2.complexity = min(parent1.complexity, parent2.complexity)
+    child1.complexity = int(round((parent1.complexity + parent2.complexity) / 2))
+    child2.complexity = child1.complexity
 
     apply_givens(child1.grid, givens, mask)
     apply_givens(child2.grid, givens, mask)

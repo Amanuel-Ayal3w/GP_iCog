@@ -7,6 +7,25 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from config import Config
 from grammar import check_boxes, check_givens
+
+
+def _has_contribution(child: list[list[int]], primary: list[list[int]], secondary: list[list[int]]) -> bool:
+    seen_primary = False
+    seen_secondary = False
+    for r, row in enumerate(child):
+        for c, value in enumerate(row):
+            if primary[r][c] != secondary[r][c]:
+                if value == primary[r][c]:
+                    seen_primary = True
+                if value == secondary[r][c]:
+                    seen_secondary = True
+            else:
+                if value == primary[r][c]:
+                    seen_primary = True
+                    seen_secondary = True
+        if seen_primary and seen_secondary:
+            return True
+    return seen_primary and seen_secondary
 from individual import Individual
 from ops.crossover import cx_boxes
 
@@ -37,12 +56,26 @@ class CrossoverTests(unittest.TestCase):
         print("Child 2:")
         for row in child2.grid:
             print(row)
+        self.assertNotEqual(child1.grid, parent1.grid)
+        self.assertNotEqual(child1.grid, parent2.grid)
+        self.assertNotEqual(child2.grid, parent1.grid)
+        self.assertNotEqual(child2.grid, parent2.grid)
+        self.assertTrue(
+            _has_contribution(child1.grid, parent1.grid, parent2.grid),
+            "child1 should include cells from both parents",
+        )
+        self.assertTrue(
+            _has_contribution(child2.grid, parent2.grid, parent1.grid),
+            "child2 should include cells from both parents",
+        )
         self.assertTrue(check_givens(child1.grid, givens, mask))
         self.assertTrue(check_givens(child2.grid, givens, mask))
         self.assertTrue(check_boxes(child1.grid, cfg.N, cfg.symbols))
         self.assertTrue(check_boxes(child2.grid, cfg.N, cfg.symbols))
-        self.assertLessEqual(child1.complexity, parent1.complexity)
-        self.assertLessEqual(child2.complexity, parent2.complexity)
+        self.assertGreaterEqual(child1.complexity, min(parent1.complexity, parent2.complexity))
+        self.assertLessEqual(child1.complexity, max(parent1.complexity, parent2.complexity))
+        self.assertGreaterEqual(child2.complexity, min(parent1.complexity, parent2.complexity))
+        self.assertLessEqual(child2.complexity, max(parent1.complexity, parent2.complexity))
 
 
 if __name__ == "__main__":
