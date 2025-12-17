@@ -25,6 +25,18 @@ class CrossoverTests(unittest.TestCase):
         parent2 = Individual([row[::-1] for row in givens], complexity=5)
         rng = random.Random(99)
         child1, child2 = cx_boxes(parent1, parent2, cfg, givens, mask, rng)
+        print("Parent 1:")
+        for row in parent1.grid:
+            print(row)
+        print("Parent 2:")
+        for row in parent2.grid:
+            print(row)
+        print("Child 1:")
+        for row in child1.grid:
+            print(row)
+        print("Child 2:")
+        for row in child2.grid:
+            print(row)
         self.assertTrue(check_givens(child1.grid, givens, mask))
         self.assertTrue(check_givens(child2.grid, givens, mask))
         self.assertTrue(check_boxes(child1.grid, cfg.N, cfg.symbols))

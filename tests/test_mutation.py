@@ -24,6 +24,12 @@ class MutationTests(unittest.TestCase):
         ind = Individual([row[:] for row in givens])
         rng = random.Random(123)
         child = mut_swap_in_box(ind, cfg, givens, mask, rng)
+        print("Mutation input:")
+        for row in ind.grid:
+            print(row)
+        print("Mutation output:")
+        for row in child.grid:
+            print(row)
         self.assertTrue(check_givens(child.grid, givens, mask))
         self.assertTrue(check_boxes(child.grid, cfg.N, cfg.symbols))
         self.assertGreaterEqual(child.complexity, ind.complexity)

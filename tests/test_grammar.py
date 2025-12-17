@@ -35,6 +35,12 @@ class GrammarTests(unittest.TestCase):
     def test_check_givens_detects_changes(self) -> None:
         grid = [row[:] for row in self.givens]
         grid[0][0] = 9
+        print("Givens grid:")
+        for row in self.givens:
+            print(row)
+        print("Modified grid:")
+        for row in grid:
+            print(row)
         self.assertFalse(check_givens(grid, self.givens, self.mask))
 
     def test_check_boxes_requires_all_symbols(self) -> None:
@@ -45,12 +51,21 @@ class GrammarTests(unittest.TestCase):
     def test_apply_givens_restores_values(self) -> None:
         grid = [row[:] for row in self.givens]
         grid[0][1] = 9
+        print("Before apply_givens:")
+        for row in grid:
+            print(row)
         apply_givens(grid, self.givens, self.mask)
+        print("After apply_givens:")
+        for row in grid:
+            print(row)
         self.assertEqual(grid[0][0], 1)
         self.assertEqual(grid[0][3], 4)
 
     def test_is_valid_individual_combines_checks(self) -> None:
         grid = _base_grid()
+        print("Validation candidate:")
+        for row in grid:
+            print(row)
         self.assertTrue(is_valid_individual(grid, self.givens, self.mask, self.cfg.N, self.cfg.symbols))
 
 

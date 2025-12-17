@@ -22,6 +22,10 @@ class SelectionTests(unittest.TestCase):
         ]
         rng = random.Random(0)
         winner = tournament(individuals, cfg, rng)
+        print("Tournament contenders (conflicts, complexity, fitness):")
+        for contender in individuals:
+            print((contender.conflicts, contender.complexity, contender.fitness))
+        print("Winner:", (winner.conflicts, winner.complexity, winner.fitness))
         self.assertEqual(winner.complexity, 1)
 
 
