@@ -21,7 +21,9 @@ def _solved_grid() -> list[list[int]]:
 class FitnessTests(unittest.TestCase):
     def test_conflicts_zero_for_solved(self) -> None:
         cfg = Config(N=2)
-        self.assertEqual(conflicts(_solved_grid(), cfg), 0)
+        value = conflicts(_solved_grid(), cfg)
+        print("Conflicts for solved grid:", value)
+        self.assertEqual(value, 0)
 
     def test_score_penalizes_complexity(self) -> None:
         cfg = Config(N=2, lam=1.0)
@@ -29,6 +31,8 @@ class FitnessTests(unittest.TestCase):
         ind_penalized = Individual(_solved_grid(), complexity=3)
         score(ind_base, cfg)
         score(ind_penalized, cfg)
+        print("Base individual fitness:", ind_base.fitness)
+        print("Penalized individual fitness:", ind_penalized.fitness)
         self.assertGreater(ind_base.fitness, ind_penalized.fitness)
 
 

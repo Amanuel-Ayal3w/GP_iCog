@@ -20,6 +20,7 @@ def mut_swap_in_box(individual: Individual, cfg: Config, givens: list[list[int]]
         coords = [(r, c) for r, c in box_cells(box_index, cfg.N) if not mask[r][c]]
         if len(coords) < 2:
             continue
+        # choose two mutable cells in the same box and swap them to preserve box permutation
         (r1, c1), (r2, c2) = rng.sample(coords, 2)
         child.grid[r1][c1], child.grid[r2][c2] = child.grid[r2][c2], child.grid[r1][c1]
         child.complexity += 1

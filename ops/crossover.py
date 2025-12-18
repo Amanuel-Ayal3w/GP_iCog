@@ -21,6 +21,7 @@ def cx_boxes(parent1: Individual, parent2: Individual, cfg: Config, givens: list
 
     indices = list(range(total_boxes))
     rng.shuffle(indices)
+    # split shuffled box indices so child1 and child2 each inherit some boxes from both parents
     split = rng.randint(1, total_boxes - 1) if total_boxes > 1 else 0
     child1_p1_boxes = set(indices[:split])
     child2_p1_boxes = set(indices[split:]) if total_boxes > 1 else set()
@@ -30,7 +31,9 @@ def cx_boxes(parent1: Individual, parent2: Individual, cfg: Config, givens: list
 
     for box in range(total_boxes):
         coords = box_cells(box, cfg.N)
+        # child1 takes boxes from parent1 when present in child1_p1_boxes, otherwise from parent2
         source1 = parent1 if box in child1_p1_boxes else parent2
+        # child2 does the complementary mix using child2_p1_boxes
         source2 = parent1 if box in child2_p1_boxes else parent2
         for r, c in coords:
             child1.grid[r][c] = source1.grid[r][c]

@@ -18,6 +18,8 @@ class EngineTests(unittest.TestCase):
         4 3 2 1
         """
         best, history = run(cfg, solved)
+        print("Best solution summary:", best)
+        print("Initial history entry:", history[0])
         self.assertEqual(best["conflicts"], 0)
         self.assertEqual(best["complexity"], 0)
         self.assertEqual(history[0]["generation"], 0)

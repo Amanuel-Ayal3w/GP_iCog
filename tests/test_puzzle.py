@@ -20,6 +20,10 @@ class PuzzleTests(unittest.TestCase):
         3 0 0 2
         """
         grid, mask = parse_grid(data, self.cfg.grid_size)
+        print("Parsed grid:")
+        for row in grid:
+            print(row)
+        print("Mask row 0:", mask[0])
         self.assertEqual(grid[0][0], 1)
         self.assertEqual(grid[3][3], 2)
         self.assertTrue(mask[0][0])
@@ -28,6 +32,7 @@ class PuzzleTests(unittest.TestCase):
     def test_validate_givens_accepts_symbols(self) -> None:
         puzzle = "1 0 0 4 0 0 0 0 0 0 0 0 3 0 0 2"
         grid, mask = parse_grid(puzzle, self.cfg.grid_size)
+        print("Valid givens grid row 0:", grid[0])
         validate_givens(grid, mask, self.cfg.symbols)
 
     def test_validate_givens_rejects_invalid_symbol(self) -> None:
@@ -38,6 +43,7 @@ class PuzzleTests(unittest.TestCase):
             [False, False, False, False],
             [True, False, False, True],
         ]
+        print("Invalid givens grid row 0:", grid[0])
         with self.assertRaises(ValueError):
             validate_givens(grid, mask, self.cfg.symbols)
 
